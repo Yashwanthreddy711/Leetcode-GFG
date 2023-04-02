@@ -6,43 +6,27 @@ using namespace std;
 // } Driver Code Ends
 class Solution {
   public:
-//   int recursion(int n,vector<int>&height,vector<int>&dp)
-//   {
-//       if(n==0)
-//       {
-//           return 0;
-//       }
-//       if(dp[n]!=-1)
-//       {
-//           return dp[n];
-//       }
-//       int left=recursion(n-1,height,dp)+abs(height[n]-height[n-1]);
-//       int right=INT_MAX;
-//       if(n>1)
-//       {
-//           right=recursion(n-2,height,dp)+abs(height[n]-height[n-2]);
-//       }
-//       return dp[n]=min(left,right);
-      
-//   }
+    int recursion(vector<int>&height,int n,vector<int>&dp)
+    {
+        if(n==0)
+        {
+            return 0;
+        }
+        if(dp[n]!=-1)
+        {
+            return dp[n];
+        }
+        int one=recursion(height,n-1,dp)+abs(height[n]-height[n-1]);
+        int two=INT_MAX;
+        if(n>1)
+        {
+             two = recursion(height,n-2,dp)+abs(height[n]-height[n-2]);
+        }
+        return dp[n]=min(one,two);
+    }
     int minimumEnergy(vector<int>& height, int n) {
-        int prev=0;
-        int prev1=0;
-        int curr;
-        for(int i=1;i<n;i++)
-        {
-        int left=prev+abs(height[i]-height[i-1]);
-        int right=INT_MAX;
-        if(i>1)
-        {
-            right=prev1+abs(height[i]-height[i-2]); 
-        }
-        curr=min(left,right);
-        prev1=prev;
-        prev=curr;
-        }
-        return prev;
-        
+        vector<int>dp(n,-1);
+        return recursion(height,n-1,dp);
     }
 };
 
