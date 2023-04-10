@@ -40,7 +40,29 @@ class Solution {
   
     int maximumPoints(vector<vector<int>>& points, int n) {
        vector<vector<int>>dp(n,vector<int>(4,-1));
-        return mychamp(n-1,3,points,dp);
+        // return mychamp(n-1,3,points,dp);
+        dp[0][0]=max(points[0][1],points[0][2]);
+        dp[0][1]=max(points[0][0],points[0][2]);
+        dp[0][2]=max(points[0][0],points[0][1]);
+        dp[0][3]=max(points[0][0],max(points[0][1],points[0][2]));
+        
+        for(int day=1;day<n;day++)
+        {
+            for(int last=0;last<4;last++)
+            {
+                int maxi=0;
+                for(int task=0;task<3;task++)
+                {
+                    if(last!=task)
+                    {
+                        int point=dp[day-1][task]+points[day][task];
+                        maxi=max(maxi,point);
+                    }
+                }
+                dp[day][last]=maxi;
+            }
+        }
+        return dp[n-1][3];
     }
 };
 
