@@ -33,11 +33,31 @@ class Solution
         
         return dp[ind][W]= max(pick,notpick);
     }
-    int knapSack(int W, int wt[], int val[], int n) 
+    int knapSack(int W, int wts[], int val[], int n) 
     { 
        // Your code here
-       vector<vector<int>>dp(n,vector<int>(W+1,-1));
-       return recursion(n-1,W,wt,val,dp);
+    //   vector<vector<int>>dp(n,vector<int>(W+1,-1));
+    vector<vector<int>>dp(n,vector<int>(W+1,0));
+    
+    for(int w=wts[0];w<=W;w++)
+    {
+        dp[0][w]=val[0];
+    }
+    for(int ind=1;ind<n;ind++)
+    {
+        for(int wt=0;wt<=W;wt++)
+        {
+           int pick=INT_MIN;
+          if(wts[ind]<=wt)
+        {
+            pick= val[ind]+dp[ind-1][wt-wts[ind]];
+        }
+        int notpick=0+dp[ind-1][wt];
+        
+         dp[ind][wt]= max(pick,notpick); 
+        }
+    }
+       return dp[n-1][W];
        
     }
 };
