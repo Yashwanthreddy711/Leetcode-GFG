@@ -33,8 +33,32 @@ class Solution {
    
     long long int count(int coins[], int N, int sum) {
 
-       vector<vector<long long int>>dp(N,vector<long long int>(sum+1,-1));
-       return recursion(N-1,sum,coins,dp);
+    //   vector<vector<long long int>>dp(N,vector<long long int>(sum+1,-1));
+       //return recursion(N-1,sum,coins,dp);
+       vector<vector<long long int>>dp(N,vector<long long int>(sum+1,0));
+       for(int target=0;target<=sum;target++)
+       {
+           if(target%coins[0] == 0)
+           {
+               dp[0][target]=1;
+           }
+       }
+       
+       for(int ind=1;ind<N;ind++)
+       {
+           for(int target=0;target<=sum;target++)
+           {
+                long long int pick=0;
+               if(coins[ind]<=target)
+               {
+                pick=dp[ind][target-coins[ind]];
+               }
+               long long int nonpick=dp[ind-1][target];
+                dp[ind][target]= pick+nonpick;
+           }
+       }
+       return dp[N-1][sum];
+       
     }
 };
 
