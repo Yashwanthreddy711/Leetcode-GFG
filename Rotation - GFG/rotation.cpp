@@ -5,37 +5,36 @@ using namespace std;
 
 
 // } Driver Code Ends
+//User function template for
 //User function template for C++
 class Solution{
 public:	
-	int findKRotation(int nums[], int n) {
-	     int first=0;
-        int last = n-1;
-        int middle=0,prev=0,next=0;
-        while (first<=last)
-        {
-            if (nums[first]<=nums[last])
+	int findKRotation(int arr[], int n) {
+	    int st=0;
+	    int en=n-1;
+	    while(st<=en)
+	    {
+	        int mid=(st+en)/2;
+	        int prev=(mid+1)%n;
+	        int next=(mid+n-1)%n;
+	        if (arr[st]<=arr[en])
             {
-                return first;
+                return st;
             }
-            middle= first + (last-first)/2;
-            prev = ( middle - 1 + n ) % n;
-            next = ( middle +1 ) % n;
-            
-            if (nums[middle] <= nums[next] && nums[middle] <= nums[prev])
-            {
-                return middle;
-            }
-            if (nums[first] <= nums[middle])
-            {
-                first = middle + 1;
-            }
-            if (nums[middle] <= nums[last])
-            {
-                last= middle-1;
-            }
-        }
-        return -1 ; 
+	        if(arr[mid]<=arr[prev] && arr[mid]<=arr[next])
+	        {
+	            return mid;
+	        }
+	        else if(arr[st]<=arr[mid])
+	        {
+	            st=mid+1;
+	        }
+	        else 
+	        {
+	            en=mid-1;
+	        }
+	    }
+	    return 0;
 	}
 
 };
