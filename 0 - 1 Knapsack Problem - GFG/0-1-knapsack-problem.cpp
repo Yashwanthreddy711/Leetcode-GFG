@@ -9,7 +9,7 @@ class Solution
     public:
     //Function to return max value that can be put in knapsack of capacity W.
     int recursion(int W, int wt[], int val[], int ind, vector<vector<int>>& dp) {
-    if (W == 0 || ind < 0) {
+    if (W <= 0 || ind < 0) {
         return 0;
     }
     if (dp[ind][W] != -1) {
@@ -26,8 +26,23 @@ class Solution
 }
 
 int knapSack(int W, int wt[], int val[], int n) { 
-    vector<vector<int>> dp(n, vector<int>(W + 1, -1));
-    return recursion(W, wt, val, n - 1, dp);
+    // vector<vector<int>> dp(n, vector<int>(W + 1, -1));
+    // return recursion(W, wt, val, n - 1, dp);
+    vector<vector<int>> dp(n + 1, vector<int>(W + 1, 0));
+
+    for (int ind = 1; ind <= n; ind++) {
+        for (int w = 1; w <= W; w++) {
+            int pick = 0;
+            if (wt[ind - 1] <= w) {
+                pick = dp[ind - 1][w - wt[ind - 1]] + val[ind - 1];
+            }
+            int notpick = dp[ind - 1][w];
+
+            dp[ind][w] = max(pick, notpick);
+        }
+    }
+
+    return dp[n][W];
 }
 
 };
