@@ -8,58 +8,28 @@ class Solution
 {
     public:
     //Function to return max value that can be put in knapsack of capacity W.
+    int recursion(int W, int wt[], int val[], int ind, vector<vector<int>>& dp) {
+    if (W == 0 || ind < 0) {
+        return 0;
+    }
+    if (dp[ind][W] != -1) {
+        return dp[ind][W];
+    }
     
-    int recursion(int ind,int W,int wt[],int val[],vector<vector<int>>&dp)
-    {
-        
-        if(ind==0)
-        {
-            if(wt[ind]<=W)
-            {
-                return val[ind];
-            }
-            return 0;
-        }
-        if(dp[ind][W] != -1)
-        {
-            return dp[ind][W];
-        }
-        int pick=INT_MIN;
-        if(wt[ind]<=W)
-        {
-            pick= val[ind]+recursion(ind-1,W-wt[ind],wt,val,dp);
-        }
-        int notpick=0+recursion(ind-1,W,wt,val,dp);
-        
-        return dp[ind][W]= max(pick,notpick);
+    int pick = 0;
+    if (wt[ind] <= W) {
+        pick = recursion(W - wt[ind], wt, val, ind - 1, dp) + val[ind];
     }
-    int knapSack(int W, int wts[], int val[], int n) 
-    { 
-       // Your code here
-    //   vector<vector<int>>dp(n,vector<int>(W+1,-1));
-    vector<vector<int>>dp(n,vector<int>(W+1,0));
+    int notpick = recursion(W, wt, val, ind - 1, dp);
     
-    for(int w=wts[0];w<=W;w++)
-    {
-        dp[0][w]=val[0];
-    }
-    for(int ind=1;ind<n;ind++)
-    {
-        for(int wt=0;wt<=W;wt++)
-        {
-           int pick=INT_MIN;
-          if(wts[ind]<=wt)
-        {
-            pick= val[ind]+dp[ind-1][wt-wts[ind]];
-        }
-        int notpick=0+dp[ind-1][wt];
-        
-         dp[ind][wt]= max(pick,notpick); 
-        }
-    }
-       return dp[n-1][W];
-       
-    }
+    return dp[ind][W] = max(pick, notpick);
+}
+
+int knapSack(int W, int wt[], int val[], int n) { 
+    vector<vector<int>> dp(n, vector<int>(W + 1, -1));
+    return recursion(W, wt, val, n - 1, dp);
+}
+
 };
 
 //{ Driver Code Starts.
