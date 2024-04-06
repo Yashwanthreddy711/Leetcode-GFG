@@ -1,34 +1,28 @@
 class Solution {
 public:
    string minRemoveToMakeValid(string s) {
-    stack<pair<char,int>> st;
-    for(int i = 0; i < s.size(); i++) {
-        if(s[i] == '(') {
-            st.push({'(',i});
-        } else if(s[i] == ')') {
-            if(!st.empty() && st.top().first == '(') {
-                st.pop();
-            } else {
-                // If ')' without a matching '('
-                st.push({')', i});
-            }
+    int cnt=0;//counting the opening brackets
+    vector<char>v(s.begin(),s.end());
+    for(int i=0;i<v.size();i++){
+        if(v[i]=='(')cnt++;
+        if(v[i]==')'){
+            if(cnt==0)v[i]='*';
+            else cnt--;
         }
     }
-    
-    // Create a set of indexes to remove
-    unordered_set<int> indexesToRemove;
-    while(!st.empty()) {
-        indexesToRemove.insert(st.top().second);
-        st.pop();
-    }
-    
-    string str = "";
-    for(int i = 0; i < s.size(); i++) {
-        if(indexesToRemove.find(i) == indexesToRemove.end()) {
-            str.push_back(s[i]);
+    for(int i=v.size()-1;i>=0;i--){
+        if(cnt>0 && v[i]=='('){
+
+        v[i]='*';
+        cnt--;
         }
     }
-    
+    string str="";
+    for(int i=0;i<v.size();i++){
+        if(v[i]!='*'){
+            str+=v[i];
+        }
+    }
     return str;
 }
 
